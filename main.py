@@ -3,6 +3,21 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args
 
+def input_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError:
+            return "Give me name and phone please."
+        except KeyError:
+            return "This contact does not exist."
+        except IndexError:
+            return "Incorrect number of arguments."
+    
+    return inner
+
+
+@input_error
 def add_contact(args, contacts):
     try:
         name, phone = args
@@ -10,7 +25,9 @@ def add_contact(args, contacts):
         return "Contact added."
     except ValueError:
         return "Incorrect number of arguments. Usage: add <name> <phone>"
-    
+
+
+@input_error
 def change_contact(args, contacts):
     try:
         name, phone = args
@@ -22,6 +39,8 @@ def change_contact(args, contacts):
     except ValueError:
         return "Incorrect number of arguments. Usage: change <name> <phone>"
 
+
+@input_error
 def get_phone(args, contacts):
     try:
         name, = args
@@ -29,8 +48,12 @@ def get_phone(args, contacts):
     except ValueError:
         return "Incorrect number of arguments. Usage: phone <name>"
 
+
+@input_error
 def list_all_contacts(_, contacts):
     return '\n'.join([f"{name}: {phone}" for name, phone in contacts.items()])
+
+
 
 def main():
     contacts = {}
