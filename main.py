@@ -19,34 +19,28 @@ def input_error(func):
 
 @input_error
 def add_contact(args, contacts):
-    try:
-        name, phone = args
-        contacts[name] = phone
-        return "Contact added."
-    except ValueError:
-        return "Incorrect number of arguments. Usage: add <name> <phone>"
+    name, phone = args
+    contacts[name] = phone
+    return "Contact added."
+    
 
 
 @input_error
 def change_contact(args, contacts):
-    try:
-        name, phone = args
-        if name in contacts:
-            contacts[name] = phone
-            return f"Phone number for {name} changed."
-        else:
-            return "Contact not found."
-    except ValueError:
-        return "Incorrect number of arguments. Usage: change <name> <phone>"
+    name, phone = args
+    if name in contacts:
+        contacts[name] = phone
+        return f"Phone number for {name} changed."
+    else:
+        return "Contact not found."
+    
 
 
 @input_error
 def get_phone(args, contacts):
-    try:
-        name, = args
-        return contacts.get(name, "Contact not found.")
-    except ValueError:
-        return "Incorrect number of arguments. Usage: phone <name>"
+    name, = args
+    return contacts.get(name, "Contact not found.")
+    
 
 
 @input_error
