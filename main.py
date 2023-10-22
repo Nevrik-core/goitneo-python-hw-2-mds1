@@ -1,5 +1,19 @@
 from collections import UserDict
 
+def input_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError:
+            return "Give me name and phone please."
+        except KeyError:
+            return "This contact does not exist."
+        except IndexError:
+            return "Incorrect number of arguments."
+    
+    return inner
+
+
 class Field:
     def __init__(self, value):
         self.value = value
@@ -12,7 +26,13 @@ class Name(Field):
     pass
 
 class Phone(Field):
-    pass
+    def __init__(self, value):
+        if len(str(value)) == 10:
+            self.value = value
+        else:
+            print("Phone number must contain 10 digits")
+
+            
 
 class Record:
     def __init__(self, name):
@@ -27,18 +47,7 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args
 
-def input_error(func):
-    def inner(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except ValueError:
-            return "Give me name and phone please."
-        except KeyError:
-            return "This contact does not exist."
-        except IndexError:
-            return "Incorrect number of arguments."
-    
-    return inner
+
 
 
 @input_error
